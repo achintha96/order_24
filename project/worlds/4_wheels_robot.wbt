@@ -8,8 +8,8 @@ WorldInfo {
   basicTimeStep 64
 }
 Viewpoint {
-  orientation 0.18323038248947787 0.703327188775415 -0.6868460471328577 0.3950289938930711
-  position -1.9551573470203834 0.4887948386705064 1.0186335964273165
+  orientation 0.21697546527829126 0.7106651181294568 -0.6692359354826326 0.6586786365805265
+  position -2.955940267087298 1.0064780075816278 2.0399115301917545
 }
 TexturedBackground {
 }
@@ -404,6 +404,7 @@ DEF load Solid {
       }
     }
     Connector {
+      translation 0.06 0 0
       name "connector_load"
       model "load"
       distanceTolerance 0.2
