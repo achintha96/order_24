@@ -10,7 +10,11 @@ vel_1 = 0;
 vel_2 = 0;
 vel_3 = 0;
 target_x = 0.25;
-target_y = 0.1;  %0.15
+target_y = -0.04;  %0.15
+
+link_1 = 0.2;
+link_2 = 0.1;
+link_3 = 0.15;
 
 % initializing connector
 jaw = wb_robot_get_device('connector');
@@ -48,7 +52,7 @@ while wb_robot_step(TIME_STEP) ~= -1
   if STAGE == 0
     % if robot_presence < 1000
     if 1 < 1000
-      [theta_1,theta_2,theta_3] = get_IK(target_x,target_y,0.2,0.15);
+      [theta_1,theta_2,theta_3] = get_IK(target_x,target_y,link_1,link_2,link_3);
       vel_1 = 0;
       vel_2 = 0;
       vel_3 = 0;

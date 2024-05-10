@@ -390,7 +390,7 @@ DEF RRR_robot Robot {
   controller "RRR_robot_controller"
 }
 DEF load Solid {
-  translation -0.1 -0.2 0.15
+  translation -0.1 -0.25 0.15
   rotation 0 1 0 -1.5707953071795862
   children [
     DEF box_shape Shape {
