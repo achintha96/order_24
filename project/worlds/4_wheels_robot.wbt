@@ -8,8 +8,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.2965344715117223 0.37631583475631575 -0.8777549200755989 1.3423971480309616
-  position -1.082318760843197 1.602300444349363 1.7280791311364996
+  orientation 0.23208327253814212 0.21114723378797468 -0.9495020801829097 1.5622198144644308
+  position -0.06975220461106899 0.6883585999001767 0.8836255235057155
 }
 TexturedBackground {
 }
@@ -577,6 +577,42 @@ Robot {
                               height 0.15
                               radius 0.02
                             }
+                          }
+                        ]
+                      }
+                      Connector {
+                        translation 0.15 0 0
+                        children [
+                          DEF holder Shape {
+                            appearance PBRAppearance {
+                              baseColor 0 1 0
+                              roughness 1
+                              metalness 0
+                            }
+                            geometry Box {
+                              size 0.01 0.1 0.2
+                            }
+                          }
+                          DEF left_flank_pose Pose {
+                            translation 0.055 0 -0.095
+                            children [
+                              DEF flank_shape Shape {
+                                appearance DEF balck_color_map PBRAppearance {
+                                  baseColor 0 0 0
+                                  roughness 1
+                                  metalness 0
+                                }
+                                geometry Box {
+                                  size 0.1 0.1 0.01
+                                }
+                              }
+                            ]
+                          }
+                          DEF right_flank_pose Pose {
+                            translation 0.055 0 0.095
+                            children [
+                              USE flank_shape
+                            ]
                           }
                         ]
                       }
