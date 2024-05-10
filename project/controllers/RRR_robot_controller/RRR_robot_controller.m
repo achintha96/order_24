@@ -50,7 +50,7 @@ while wb_robot_step(TIME_STEP) ~= -1
     vel_3 = 0
     % if robot_presence < 1000
     if 1 < 1000
-      [theta_1,theta_2,theta_3] = find_IK(target_x,target_y,0.2,0.15)
+      [theta_1,theta_2,theta_3] = get_IK(target_x,target_y,0.2,0.15)
       vel_1 = 0
       vel_2 = 0
       vel_3 = 0
