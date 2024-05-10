@@ -59,9 +59,6 @@ while wb_robot_step(TIME_STEP) ~= -1
       wb_console_print(strcat('STAGE: ', num2str(STAGE), '   Robot has not arrived. robot_presence:  ', num2str(robot_presence)), WB_STDOUT); 
     end  
   elseif STAGE == 1  
-    L1_con = 0
-    L2_con = 0
-    L3_con = 0
     
     wb_console_print(strcat('STAGE: ', num2str(STAGE), '   pos_1 : ', num2str(pos_1), '  pos_2 : ', num2str(pos_2), '  pos_3 : ', num2str(pos_3)), WB_STDOUT);
     
@@ -83,9 +80,6 @@ while wb_robot_step(TIME_STEP) ~= -1
     theta_3 = -theta_3;
     STAGE = 3
   elseif STAGE == 3
-    L1_con = 0
-    L2_con = 0
-    L3_con = 0
     
     wb_console_print(strcat('STAGE: ', num2str(STAGE), '   pos_1 : ', num2str(pos_1), '  pos_2 : ', num2str(pos_2), '  pos_3 : ', num2str(pos_3)), WB_STDOUT);
     
