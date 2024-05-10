@@ -8,8 +8,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.29371469158689556 0.24068097183564294 -0.9250969407268977 1.7252595134457904
-  position -0.3711348341167966 1.5112271062523854 1.4616271417241906
+  orientation 0.2965344715117223 0.37631583475631575 -0.8777549200755989 1.3423971480309616
+  position -1.082318760843197 1.602300444349363 1.7280791311364996
 }
 TexturedBackground {
 }
@@ -551,6 +551,40 @@ Robot {
                       }
                     }
                   ]
+                }
+                DEF link_3_hinge_joint HingeJoint {
+                  jointParameters HingeJointParameters {
+                    axis 0 0 1
+                    anchor 0.1 0 0
+                  }
+                  device [
+                    PositionSensor {
+                    }
+                    RotationalMotor {
+                    }
+                  ]
+                  endPoint Solid {
+                    translation 0.1 0 0
+                    children [
+                      USE hinge_2_shape
+                      Pose {
+                        translation 0.075 0 0
+                        rotation 0 1 0 1.57
+                        children [
+                          Shape {
+                            appearance USE link_color_map
+                            geometry Cylinder {
+                              height 0.15
+                              radius 0.02
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                    boundingObject USE hinge_2_shape
+                    physics Physics {
+                    }
+                  }
                 }
               ]
               boundingObject USE hinge_2_shape
