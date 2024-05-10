@@ -59,14 +59,9 @@ while wb_robot_step(TIME_STEP) ~= -1
       wb_console_print(strcat('STAGE: ', num2str(STAGE), '   Robot has not arrived. robot_presence:  ', num2str(robot_presence)), WB_STDOUT); 
     end  
   elseif STAGE == 1  
-    
-    wb_console_print(strcat('STAGE: ', num2str(STAGE), '   pos_1 : ', num2str(pos_1), '  pos_2 : ', num2str(pos_2), '  pos_3 : ', num2str(pos_3)), WB_STDOUT);
-    
     [vel_1,L1_con] = is_rotated(theta_1, pos_1)
     [vel_2,L2_con] = is_rotated(theta_2, pos_2)
     [vel_3,L3_con] = is_rotated(theta_3, pos_3)
-    
-    wb_console_print(strcat('STAGE: ', num2str(STAGE), '   L1 : ', num2str(L1_con), '  L2 : ', num2str(L2_con), '  L3 : ', num2str(L3_con), '  L1*L2*L3 : ', num2str(L1_con*L2_con*L3_con)), WB_STDOUT);
     
     if L1_con * L2_con * L3_con == 1
       STAGE = 2
@@ -80,14 +75,9 @@ while wb_robot_step(TIME_STEP) ~= -1
     theta_3 = -theta_3;
     STAGE = 3
   elseif STAGE == 3
-    
-    wb_console_print(strcat('STAGE: ', num2str(STAGE), '   pos_1 : ', num2str(pos_1), '  pos_2 : ', num2str(pos_2), '  pos_3 : ', num2str(pos_3)), WB_STDOUT);
-    
     [vel_1,L1_con] = is_rotated(theta_1, pos_1)
     [vel_2,L2_con] = is_rotated(theta_2, pos_2)
     [vel_3,L3_con] = is_rotated(theta_3, pos_3)
-    
-    wb_console_print(strcat('STAGE: ', num2str(STAGE), '   L1 : ', num2str(L1_con), '  L2 : ', num2str(L2_con), '  L3 : ', num2str(L3_con), '  L1*L2*L3 : ', num2str(L1_con*L2_con*L3_con)), WB_STDOUT);
     
     if L1_con * L2_con * L3_con == 1
       STAGE = 4
