@@ -10,7 +10,7 @@ vel_1 = 0;
 vel_2 = 0;
 vel_3 = 0;
 target_x = 0.25;
-target_y = -0.04;  %0.15
+target_y = -0.04; 
 
 link_1 = 0.2;
 link_2 = 0.1;
