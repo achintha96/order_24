@@ -182,6 +182,9 @@ while wb_robot_step(TIME_STEP) ~= -1
     if L1_con * L2_con * L3_con == 1
       STAGE = 4
     end
+  elseif STAGE == 4
+    wb_connector_unlock(jaw)
+    STAGE = 5
   end
 
   wb_motor_set_velocity(motor_1, vel_1);
