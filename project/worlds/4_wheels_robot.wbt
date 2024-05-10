@@ -1,4 +1,4 @@
-#VRML_SIM R2023a utf8
+#VRML_SIM R2023b utf8
 
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/Floor.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
@@ -8,8 +8,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.26436858026904503 0.08172386132857544 -0.9609528938798598 2.4352684812752394
-  position 5.210058282590255 6.186243655360486 5.594872430263005
+  orientation 0.29371469158689556 0.24068097183564294 -0.9250969407268977 1.7252595134457904
+  position -0.3711348341167966 1.5112271062523854 1.4616271417241906
 }
 TexturedBackground {
 }
@@ -175,15 +175,15 @@ Robot {
     density -1
     mass 1
   }
-  controller "obstacle_avoidance"
+  controller "<none>"
   linearVelocity 0.005440805323790292 -0.039628242923708125 1.6619219589027848e-11
   angularVelocity 5.828256917230906e-09 -4.289800964989155e-08 -5.009011303287543e-08
 }
 Robot {
-  translation -0.0008538953789922861 1.4781534905410063e-08 0.14921269894850767
+  translation -0.690844 1.35459e-08 0.145222
   rotation -1.855899355013879e-08 -0.9999999999999519 3.098119983441349e-07 0.005780730439736196
   children [
-    Transform {
+    Pose {
       children [
         DEF base Shape {
           appearance PBRAppearance {
@@ -241,7 +241,7 @@ Robot {
                       radius 0.02
                     }
                   }
-                  Transform {
+                  Pose {
                     translation 0 0 0.15
                     rotation 0 1 0 1.57
                     children [
@@ -260,7 +260,7 @@ Robot {
                   }
                 ]
               }
-              Transform {
+              Pose {
                 children [
                   Solid {
                     translation 0 0 -0.18
@@ -305,7 +305,7 @@ Robot {
                                     radius 0.02
                                   }
                                 }
-                                Transform {
+                                Pose {
                                   translation 0 0 0.16
                                   rotation 0 1 0 1.57
                                   children [
@@ -358,7 +358,7 @@ Robot {
                                     radius 0.02
                                   }
                                 }
-                                Transform {
+                                Pose {
                                   translation 0 0 0.14
                                   children [
                                     Shape {
@@ -457,7 +457,76 @@ Robot {
   boundingObject USE base
   physics Physics {
   }
-  controller "obstacle_avoidance"
-  linearVelocity -7.645737147852643e-06 3.1531413183400936e-09 -5.4287904295686594e-08
-  angularVelocity -2.104629830858195e-08 -5.0985083061013925e-05 -5.207264607803402e-11
+  controller "<none>"
+}
+Robot {
+  translation 0 0 0.15
+  children [
+    Solid {
+      children [
+        DEF base_shape Shape {
+          appearance DEF base_color_map PBRAppearance {
+            baseColor 0.5 0.5 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.1 0.1 0.3
+          }
+        }
+      ]
+    }
+    DEF link_1_hinge_joint HingeJoint {
+      jointParameters HingeJointParameters {
+        anchor -0.1 0 0.1
+      }
+      device [
+        PositionSensor {
+        }
+        RotationalMotor {
+        }
+      ]
+      endPoint Solid {
+        translation -0.1 0 0.1
+        rotation 0 1 0 -1.57
+        children [
+          Shape {
+            appearance DEF hinge_color_map PBRAppearance {
+              baseColor 0 1 1
+              roughness 1
+              metalness 0
+            }
+            geometry DEF hinge_shape Cylinder {
+              height 0.1
+              radius 0.03
+            }
+          }
+          Pose {
+            translation 0.1 0 0
+            rotation 0 1 0 1.57
+            children [
+              Shape {
+                appearance DEF link_color_map PBRAppearance {
+                  baseColor 1 0.7 0.7
+                  roughness 1
+                  metalness 0
+                }
+                geometry Cylinder {
+                  height 0.2
+                  radius 0.02
+                }
+              }
+            ]
+          }
+        ]
+        name "solid(1)"
+        boundingObject USE hinge_shape
+        physics Physics {
+        }
+      }
+    }
+  ]
+  boundingObject USE base_shape
+  physics Physics {
+  }
 }
