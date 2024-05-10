@@ -1,16 +1,463 @@
-#VRML_SIM R2023b utf8
+#VRML_SIM R2023a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/Floor.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+
 WorldInfo {
+  basicTimeStep 16
 }
 Viewpoint {
-  orientation -0.5773 0.5773 0.5773 2.0944
-  position 0 0 10
+  orientation 0.26436858026904503 0.08172386132857544 -0.9609528938798598 2.4352684812752394
+  position 5.210058282590255 6.186243655360486 5.594872430263005
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
 }
-RectangleArena {
+Floor {
+  size 4 4
+}
+Robot {
+  translation 0.3581647855657855 1.2940145713456628 0.03986048964813275
+  rotation 4.253722737655616e-08 -3.709504998415499e-08 -0.9999999999999984 1.4343531908850502
+  children [
+    DEF BODY Shape {
+      appearance PBRAppearance {
+        baseColor 0.917647 0.145098 0.145098
+        roughness 1
+        metalness 0
+      }
+      geometry Box {
+        size 0.2 0.1 0.05
+      }
+    }
+    DEF WHEEL1 HingeJoint {
+      jointParameters HingeJointParameters {
+        position 266.97593039785585
+        axis 0 1 0
+        anchor 0.05 0.06 0
+      }
+      device [
+        RotationalMotor {
+          name "wheel1"
+        }
+      ]
+      endPoint Solid {
+        translation 0.05 0.06 0
+        rotation 0.021018622373996647 0.7069492718474082 -0.7069518686218451 3.099561751983879
+        children [
+          DEF WHEEL Shape {
+            appearance PBRAppearance {
+              baseColor 0.305882 0.898039 0.25098
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.02
+              radius 0.04
+              subdivision 24
+            }
+          }
+        ]
+        boundingObject USE WHEEL
+        physics Physics {
+        }
+      }
+    }
+    DEF WHEEL2 HingeJoint {
+      jointParameters HingeJointParameters {
+        position 215.7760103846477
+        axis 0 1 0
+        anchor 0.05 -0.06 0
+      }
+      device [
+        RotationalMotor {
+          name "wheel2"
+        }
+      ]
+      endPoint Solid {
+        translation 0.05 -0.06 0
+        rotation 0.35806461415004054 0.6602221330094512 -0.6602245581452064 2.453912610169318
+        children [
+          USE WHEEL
+        ]
+        name "solid(1)"
+        boundingObject USE WHEEL
+        physics Physics {
+        }
+      }
+    }
+    DEF WHEEL3 HingeJoint {
+      jointParameters HingeJointParameters {
+        position 266.975919522594
+        axis 0 1 0
+        anchor -0.05 0.06 0
+      }
+      device [
+        RotationalMotor {
+          name "wheel3"
+        }
+      ]
+      endPoint Solid {
+        translation -0.05 0.06 0
+        rotation 0.021022468215762476 0.7069492146711711 -0.7069518114453994 3.099554063725734
+        children [
+          USE WHEEL
+        ]
+        name "solid(2)"
+        boundingObject USE WHEEL
+        physics Physics {
+        }
+      }
+    }
+    DEF WHEEL4 HingeJoint {
+      jointParameters HingeJointParameters {
+        position 215.77600418815285
+        axis 0 1 0
+        anchor -0.05 -0.06 0
+      }
+      device [
+        RotationalMotor {
+          name "wheel4"
+        }
+      ]
+      endPoint Solid {
+        translation -0.05 -0.06 0
+        rotation 0.35806692194685147 0.6602215072046258 -0.6602239323380814 2.453908519108222
+        children [
+          USE WHEEL
+        ]
+        name "solid(3)"
+        boundingObject USE WHEEL
+        physics Physics {
+        }
+      }
+    }
+    DEF DS_RIGHT DistanceSensor {
+      translation 0.1 -0.03 0
+      rotation 0 0 1 -0.3
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.184314 0.596078 0.847059
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "ds_right"
+    }
+    DEF DS_LEFT DistanceSensor {
+      translation 0.1 0.03 0
+      rotation 0 0 1 0.3
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.184314 0.596078 0.847059
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "ds_left"
+    }
+  ]
+  name "mobile_robot"
+  boundingObject USE BODY
+  physics Physics {
+    density -1
+    mass 1
+  }
+  controller "obstacle_avoidance"
+  linearVelocity 0.005440805323790292 -0.039628242923708125 1.6619219589027848e-11
+  angularVelocity 5.828256917230906e-09 -4.289800964989155e-08 -5.009011303287543e-08
+}
+Robot {
+  translation -0.0008538953789922861 1.4781534905410063e-08 0.14921269894850767
+  rotation -1.855899355013879e-08 -0.9999999999999519 3.098119983441349e-07 0.005780730439736196
+  children [
+    Transform {
+      children [
+        DEF base Shape {
+          appearance PBRAppearance {
+            baseColor 0.5 0.5 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.1 0.1 0.3
+          }
+        }
+      ]
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 2.841588516706492e-09
+        anchor -0.07 0 0.1
+      }
+      device [
+        RotationalMotor {
+          name "link1"
+        }
+        PositionSensor {
+          name "joint1"
+        }
+      ]
+      endPoint Solid {
+        translation -0.07 0 0.1
+        rotation 1.4219265608715335e-09 1 1.420794258353246e-09 1.5699996938995748
+        children [
+          DEF base_link Shape {
+            appearance PBRAppearance {
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.05
+              radius 0.05
+            }
+          }
+          Solid {
+            translation -0.150024 0 -0.049564
+            rotation 0 1 0 1.57
+            children [
+              DEF link1_complete Group {
+                children [
+                  Shape {
+                    appearance PBRAppearance {
+                      baseColor 1 0.7 0.7
+                      roughness 1
+                      metalness 0
+                    }
+                    geometry Cylinder {
+                      height 0.3
+                      radius 0.02
+                    }
+                  }
+                  Transform {
+                    translation 0 0 0.15
+                    rotation 0 1 0 1.57
+                    children [
+                      Shape {
+                        appearance PBRAppearance {
+                          baseColor 0 1 1
+                          roughness 1
+                          metalness 0
+                        }
+                        geometry Cylinder {
+                          height 0.05
+                          radius 0.04
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+              Transform {
+                children [
+                  Solid {
+                    translation 0 0 -0.18
+                    rotation 0 1 0 1.5707996938995747
+                    children [
+                      Shape {
+                        appearance PBRAppearance {
+                          baseColor 0 1 1
+                          roughness 1
+                          metalness 0
+                        }
+                        geometry Cylinder {
+                          height 0.1
+                          radius 0.03
+                        }
+                      }
+                      HingeJoint {
+                        jointParameters HingeJointParameters {
+                        }
+                        device [
+                          RotationalMotor {
+                            name "link2"
+                          }
+                          PositionSensor {
+                            name "joint2"
+                          }
+                        ]
+                        endPoint Solid {
+                          translation 0.15 0 0.000119449
+                          rotation 0 1 0 1.57
+                          children [
+                            DEF link2_complete Group {
+                              children [
+                                Shape {
+                                  appearance PBRAppearance {
+                                    baseColor 1 0.7 0.7
+                                    roughness 1
+                                    metalness 0
+                                  }
+                                  geometry Cylinder {
+                                    height 0.3
+                                    radius 0.02
+                                  }
+                                }
+                                Transform {
+                                  translation 0 0 0.16
+                                  rotation 0 1 0 1.57
+                                  children [
+                                    Shape {
+                                      appearance PBRAppearance {
+                                        baseColor 0 1 1
+                                        roughness 1
+                                        metalness 0
+                                      }
+                                      geometry Cylinder {
+                                        height 0.1
+                                        radius 0.03
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                          boundingObject USE link2_complete
+                          physics Physics {
+                          }
+                        }
+                      }
+                      HingeJoint {
+                        jointParameters HingeJointParameters {
+                        }
+                        device [
+                          RotationalMotor {
+                            name "link3"
+                          }
+                          PositionSensor {
+                            name "joint3"
+                          }
+                        ]
+                        endPoint Solid {
+                          translation 0.45 0 0
+                          rotation 0 1 0 1.57
+                          children [
+                            DEF link3_complete Group {
+                              children [
+                                Shape {
+                                  appearance PBRAppearance {
+                                    baseColor 1 0.7 0.7
+                                    roughness 1
+                                    metalness 0
+                                  }
+                                  geometry Cylinder {
+                                    height 0.3
+                                    radius 0.02
+                                  }
+                                }
+                                Transform {
+                                  translation 0 0 0.14
+                                  children [
+                                    Shape {
+                                      appearance PBRAppearance {
+                                        baseColor 0 1 0
+                                        roughness 1
+                                        metalness 0
+                                      }
+                                      geometry Box {
+                                        size 0.2 0.1 0.02
+                                      }
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                            SliderJoint {
+                              jointParameters JointParameters {
+                              }
+                              device [
+                                LinearMotor {
+                                }
+                                PositionSensor {
+                                }
+                              ]
+                              endPoint Solid {
+                                translation 0.09 0 0.2
+                                children [
+                                  Shape {
+                                    appearance PBRAppearance {
+                                      baseColor 0 0 0
+                                      roughness 1
+                                      metalness 0
+                                    }
+                                    geometry Box {
+                                      size 0.01 0.1 0.1
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                            SliderJoint {
+                              jointParameters JointParameters {
+                              }
+                              device [
+                                LinearMotor {
+                                }
+                                PositionSensor {
+                                }
+                              ]
+                              endPoint Solid {
+                                translation -0.09 0 0.2
+                                children [
+                                  Shape {
+                                    appearance PBRAppearance {
+                                      baseColor 0 0 0
+                                      roughness 1
+                                      metalness 0
+                                    }
+                                    geometry Box {
+                                      size 0.01 0.1 0.1
+                                    }
+                                  }
+                                ]
+                                name "solid(1)"
+                              }
+                            }
+                            TouchSensor {
+                            }
+                          ]
+                          name "solid(1)"
+                          boundingObject USE link3_complete
+                          physics Physics {
+                          }
+                        }
+                      }
+                    ]
+                    boundingObject USE link3_complete
+                    physics Physics {
+                    }
+                  }
+                ]
+              }
+            ]
+            boundingObject USE link1_complete
+            physics Physics {
+            }
+          }
+        ]
+        physics Physics {
+        }
+      }
+    }
+  ]
+  name "RRR_robot"
+  boundingObject USE base
+  physics Physics {
+  }
+  controller "obstacle_avoidance"
+  linearVelocity -7.645737147852643e-06 3.1531413183400936e-09 -5.4287904295686594e-08
+  angularVelocity -2.104629830858195e-08 -5.0985083061013925e-05 -5.207264607803402e-11
 }
