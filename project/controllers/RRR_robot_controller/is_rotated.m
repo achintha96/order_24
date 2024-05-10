@@ -5,6 +5,7 @@ if imabsdiff(limit, current) < 0.01
   speed = 0
   status = 1
 else
+  status = 0
   if limit > current
     speed = 0.1
   else
