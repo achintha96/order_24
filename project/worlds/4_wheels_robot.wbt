@@ -8,8 +8,8 @@ WorldInfo {
   basicTimeStep 16
 }
 Viewpoint {
-  orientation 0.23208327253814212 0.21114723378797468 -0.9495020801829097 1.5622198144644308
-  position -0.25738633494351987 3.415761398298963 2.1842683847032487
+  orientation 0.1669328421654986 0.9233922548440731 -0.3456590370589597 0.689139408627051
+  position -2.44093621250452 0.5772473188643316 2.2497735979999556
 }
 TexturedBackground {
 }
@@ -202,8 +202,10 @@ DEF RRR_robot Robot {
       }
       device [
         PositionSensor {
+          name "link_1_encoder"
         }
         RotationalMotor {
+          name "link_1_motor"
         }
       ]
       endPoint Solid {
@@ -240,13 +242,15 @@ DEF RRR_robot Robot {
           }
           DEF link_2_hinge_joint HingeJoint {
             jointParameters HingeJointParameters {
-              axis 0 0 1
+              axis 0 0 -1
               anchor 0.2 0 0
             }
             device [
               PositionSensor {
+                name "link_2_encoder"
               }
               RotationalMotor {
+                name "link_2_motor"
               }
             ]
             endPoint Solid {
@@ -274,13 +278,15 @@ DEF RRR_robot Robot {
                 }
                 DEF link_3_hinge_joint HingeJoint {
                   jointParameters HingeJointParameters {
-                    axis 0 0 1
+                    axis 0 0 -1
                     anchor 0.1 0 0
                   }
                   device [
                     PositionSensor {
+                      name "link_3_encoder"
                     }
                     RotationalMotor {
+                      name "link_3_motor"
                     }
                   ]
                   endPoint Solid {
@@ -359,4 +365,5 @@ DEF RRR_robot Robot {
   boundingObject USE base_shape
   physics Physics {
   }
+  controller "RRR_robot_controller"
 }
