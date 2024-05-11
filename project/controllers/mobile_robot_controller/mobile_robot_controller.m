@@ -170,6 +170,13 @@ while wb_robot_step(TIME_STEP) ~= -1
       SUBSTAGE = 1;
     elseif SUBSTAGE == 1
       wb_console_print(strcat('STAGE: ', num2str(STAGE), '  bearing: ', num2str(bearing), '  target bearing: ', num2str(target_bearing)), WB_STDOUT);
+      
+      if imabsdiff(bearing,target_bearing) > 2
+        REV_SPD = MAX_OMEGA*0.1;
+      else
+        REV_SPD = MAX_OMEGA*0.0025;
+      end
+      
       if bearing<target_bearing
         vel_1 = REV_SPD;
         vel_2 = -REV_SPD;
@@ -301,6 +308,13 @@ while wb_robot_step(TIME_STEP) ~= -1
     elseif SUBSTAGE == 1
       wb_console_print(strcat('STAGE: ', num2str(STAGE), '  bearing: ', num2str(bearing), '  target bearing: ', num2str(target_bearing)), WB_STDOUT);
       abs_diff = imabsdiff( bearing, target_bearing)
+      
+      if imabsdiff(bearing,target_bearing) > 2
+        REV_SPD = MAX_OMEGA*0.1;
+      else
+        REV_SPD = MAX_OMEGA*0.0025;
+      end
+      
       if abs_diff>0.1
         vel_1 = REV_SPD*ccw_turn;
         vel_2 = -REV_SPD*ccw_turn;
@@ -370,17 +384,26 @@ while wb_robot_step(TIME_STEP) ~= -1
         vel_3 = 0;
         vel_4 = 0;
         SUBSTAGE = 0;
-        % STAGE = 6;
+        STAGE = 6;
+      else
         if TARGET(1) == DESTINATION(1) & TARGET(2) == DESTINATION(2) 
           STAGE = 100
+          SUBSTAGE = 0
+          vel_1 = 0;
+          vel_2 = 0;
+          vel_3 = 0;
+          vel_4 = 0;
         else
-          STAGE = 6;
+          vel_1 = MAX_OMEGA;
+          vel_2 = MAX_OMEGA;
+          vel_3 = MAX_OMEGA;
+          vel_4 = MAX_OMEGA;
         end
-      else
-        vel_1 = MAX_OMEGA;
-        vel_2 = MAX_OMEGA;
-        vel_3 = MAX_OMEGA;
-        vel_4 = MAX_OMEGA;
+        
+        % vel_1 = MAX_OMEGA;
+        % vel_2 = MAX_OMEGA;
+        % vel_3 = MAX_OMEGA;
+        % vel_4 = MAX_OMEGA;
       end
       % wb_console_print(strcat('STAGE: ', num2str(STAGE), '  SUBSTAGE: ', num2str(SUBSTAGE), '  center_ds: ', num2str(value_centre)), WB_STDOUT);
     end
