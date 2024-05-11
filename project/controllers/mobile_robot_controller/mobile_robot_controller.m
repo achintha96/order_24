@@ -96,27 +96,18 @@ while wb_robot_step(TIME_STEP) ~= -1
     GRADIENT = dy/dx;
     INTERCEPT = TARGET(2)-(GRADIENT*TARGET(1));
     
-    vel_1 = 0;
-    vel_2 = 0;
-    vel_3 = 0;
-    vel_4 = 0;
+    [vel_1, vel_2, vel_3, vel_4] = stop();
     STAGE = 1;
     wb_console_print(strcat('STAGE: ', num2str(STAGE), '  y = ', num2str(GRADIENT), '  x + ', num2str(INTERCEPT)), WB_STDOUT);
   elseif STAGE == 1; % moving towards target
     if round(TARGET(1)*10)==round(current_pos(1)*10) & round(TARGET(2)*10)==round(current_pos(2)*10)
       %checking for arrival of destination
-      vel_1 = 0;
-      vel_2 = 0;
-      vel_3 = 0;
-      vel_4 = 0;
+      [vel_1, vel_2, vel_3, vel_4] = stop();
       STAGE = 5; %go to arrival orientation correction
     elseif value_centre<OBSTACLE_THR | value_left<OBSTACLE_THR | value_right<OBSTACLE_THR 
       %checking for obstacle -> if true right revolve
       wb_console_print(strcat('STAGE: ', num2str(STAGE), '  ds_centre: ', num2str(value_centre), '  ds_left: ', num2str(value_left), '  ds_right: ', num2str(value_right)), WB_STDOUT);
-      vel_1 = 0;
-      vel_2 = 0;
-      vel_3 = 0;
-      vel_4 = 0;
+      [vel_1, vel_2, vel_3, vel_4] = stop();
       STAGE = 2; % revolve stage
     else
       % calculating the bearing of target wrt current pos
@@ -163,10 +154,7 @@ while wb_robot_step(TIME_STEP) ~= -1
   elseif STAGE == 2 % turn right and going around obstacle - bug algorithm
     if SUBSTAGE == 0
       target_bearing = mod(bearing + 90,360)
-      vel_1 = 0;
-      vel_2 = 0;
-      vel_3 = 0;
-      vel_4 = 0;
+      [vel_1, vel_2, vel_3, vel_4] = stop();
       SUBSTAGE = 1;
     elseif SUBSTAGE == 1
       wb_console_print(strcat('STAGE: ', num2str(STAGE), '  bearing: ', num2str(bearing), '  target bearing: ', num2str(target_bearing)), WB_STDOUT);
@@ -183,10 +171,7 @@ while wb_robot_step(TIME_STEP) ~= -1
         vel_3 = REV_SPD;
         vel_4 = -REV_SPD;
       else
-        vel_1 = 0;
-        vel_2 = 0;
-        vel_3 = 0;
-        vel_4 = 0;
+        [vel_1, vel_2, vel_3, vel_4] = stop();
         SUBSTAGE = 2;
         %STAGE = 5;
       end
@@ -200,10 +185,7 @@ while wb_robot_step(TIME_STEP) ~= -1
         vel_3 = MAX_OMEGA;
         vel_4 = MAX_OMEGA;
       else
-        vel_1 = 0;
-        vel_2 = 0;
-        vel_3 = 0;
-        vel_4 = 0;
+        [vel_1, vel_2, vel_3, vel_4] = stop();
         SUBSTAGE = 0;
         STAGE = 3;
       end
@@ -213,25 +195,9 @@ while wb_robot_step(TIME_STEP) ~= -1
     abs_diff = imabsdiff( y,current_pos(2))
     if abs_diff < 0.09
       wb_console_print(strcat('STAGE*: ', num2str(STAGE), '  current_x: ', num2str(current_pos(1)), '  current_y: ', num2str(current_pos(2)), '  calculated y: ', num2str(y)), WB_STDOUT);
-      vel_1 = 0;
-      vel_2 = 0;
-      vel_3 = 0;
-      vel_4 = 0;
+      [vel_1, vel_2, vel_3, vel_4] = stop();
       STAGE = 4;
-    %if y-0.1 < current_pos(2) < y+0.1
-    %  wb_console_print(strcat('STAGE_: ', num2str(STAGE), '  current_x: ', num2str(current_pos(1)), '  current_y: ', num2str(current_pos(2)), '  calculated y: ', num2str(y)), WB_STDOUT);
-    %  vel_1 = 0;
-    %  vel_2 = 0;
-    %  vel_3 = 0;
-    %  vel_4 = 0;
-    %  STAGE = 1;
-    %elseif current_pos(2)-0.1 < y < current_pos(2)+0.1
-    %  wb_console_print(strcat('STAGE: ', num2str(STAGE), '  current_x: ', num2str(current_pos(1)), '  current_y: ', num2str(current_pos(2)), '  calculated y: ', num2str(y)), WB_STDOUT);
-    %  vel_1 = 0;
-    %  vel_2 = 0;
-    %  vel_3 = 0;
-    %  vel_4 = 0;
-    %  STAGE = 1;
+    
     else
       dFL = wb_distance_sensor_get_value(ds_dFL);
       dRL = wb_distance_sensor_get_value(ds_dRL);
@@ -285,10 +251,7 @@ while wb_robot_step(TIME_STEP) ~= -1
         target_bearing=0;
       end
       
-      vel_1 = 0;
-      vel_2 = 0;
-      vel_3 = 0;
-      vel_4 = 0;
+      [vel_1, vel_2, vel_3, vel_4] = stop();
       SUBSTAGE = 1;
       accw_cost = 0
       ccw_cost = 0
@@ -321,10 +284,7 @@ while wb_robot_step(TIME_STEP) ~= -1
         vel_3 = REV_SPD*ccw_turn;
         vel_4 = -REV_SPD*ccw_turn;
       else
-        vel_1 = 0;
-        vel_2 = 0;
-        vel_3 = 0;
-        vel_4 = 0;
+        [vel_1, vel_2, vel_3, vel_4] = stop();
         SUBSTAGE = 0;
         STAGE = 1;
       end
@@ -332,10 +292,7 @@ while wb_robot_step(TIME_STEP) ~= -1
   elseif STAGE == 5 %correcting orientaton after arrival
     if SUBSTAGE == 0
       target_bearing = TARGET_ORIENTATON
-      vel_1 = 0;
-      vel_2 = 0;
-      vel_3 = 0;
-      vel_4 = 0;
+      [vel_1, vel_2, vel_3, vel_4] = stop();
       SUBSTAGE = 1;
       accw_cost = 0
       ccw_cost = 0
@@ -369,41 +326,27 @@ while wb_robot_step(TIME_STEP) ~= -1
         vel_3 = REV_SPD*ccw_turn;
         vel_4 = -REV_SPD*ccw_turn;
       else
-        vel_1 = 0;
-        vel_2 = 0;
-        vel_3 = 0;
-        vel_4 = 0;
+        [vel_1, vel_2, vel_3, vel_4] = stop();
         SUBSTAGE = 2
         % SUBSTAGE = 0;
         % STAGE = 6;
         end
     elseif SUBSTAGE == 2
       if value_left < 230
-        vel_1 = 0;
-        vel_2 = 0;
-        vel_3 = 0;
-        vel_4 = 0;
+        [vel_1, vel_2, vel_3, vel_4] = stop();
         SUBSTAGE = 0;
         STAGE = 6;
       else
         if TARGET(1) == DESTINATION(1) & TARGET(2) == DESTINATION(2) 
           STAGE = 100
           SUBSTAGE = 0
-          vel_1 = 0;
-          vel_2 = 0;
-          vel_3 = 0;
-          vel_4 = 0;
+          [vel_1, vel_2, vel_3, vel_4] = stop();
         else
           vel_1 = MAX_OMEGA;
           vel_2 = MAX_OMEGA;
           vel_3 = MAX_OMEGA;
           vel_4 = MAX_OMEGA;
         end
-        
-        % vel_1 = MAX_OMEGA;
-        % vel_2 = MAX_OMEGA;
-        % vel_3 = MAX_OMEGA;
-        % vel_4 = MAX_OMEGA;
       end
       % wb_console_print(strcat('STAGE: ', num2str(STAGE), '  SUBSTAGE: ', num2str(SUBSTAGE), '  center_ds: ', num2str(value_centre)), WB_STDOUT);
     end
@@ -411,10 +354,7 @@ while wb_robot_step(TIME_STEP) ~= -1
     box_presence_1 = wb_distance_sensor_get_value(box_1);
     box_presence_2 = wb_distance_sensor_get_value(box_2);
     wb_console_print(strcat('STAGE: ', num2str(STAGE), '   box_presence_1: ',num2str(box_presence_1), '   box_presence_2: ',num2str(box_presence_2)), WB_STDOUT);
-    vel_1 = 0;
-    vel_2 = 0;
-    vel_3 = 0;
-    vel_4 = 0;
+    [vel_1, vel_2, vel_3, vel_4] = stop();
     if box_presence_1 < 1000 | box_presence_2 < 1000
       STAGE = 7
       % if TARGET(1) == DESTINATION(1) & TARGET(2) == DESTINATION(2) 
@@ -428,10 +368,7 @@ while wb_robot_step(TIME_STEP) ~= -1
     end
   elseif STAGE == 7
     if value_left > 990
-        vel_1 = 0;
-        vel_2 = 0;
-        vel_3 = 0;
-        vel_4 = 0;
+        [vel_1, vel_2, vel_3, vel_4] = stop();
         if TARGET(1) == DESTINATION(1) & TARGET(2) == DESTINATION(2) 
           STAGE = 100
         else
@@ -448,15 +385,9 @@ while wb_robot_step(TIME_STEP) ~= -1
       end
   elseif STAGE == 100
     wb_console_print(strcat('STAGE: ', num2str(STAGE), ' Arrived destination '), WB_STDOUT);
-    vel_1 = 0;
-    vel_2 = 0;
-    vel_3 = 0;
-    vel_4 = 0;
+    [vel_1, vel_2, vel_3, vel_4] = stop();
   else
-    vel_1 = 0;
-    vel_2 = 0;
-    vel_3 = 0;
-    vel_4 = 0;
+    [vel_1, vel_2, vel_3, vel_4] = stop();
   end
   wb_motor_set_velocity(wheel_1, vel_1);
   wb_motor_set_velocity(wheel_2, vel_2);
