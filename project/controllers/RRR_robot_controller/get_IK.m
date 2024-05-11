@@ -15,7 +15,7 @@ theta3 = (0.5*pi) - theta2 + theta1;
 theta1 = (0.5*pi) - theta1;
 
 if X<0
-  theta1 = pi-theta1
+  theta1 = -1*theta1
   theta2 = -1*theta2
   theta3 = -1*theta3
 end

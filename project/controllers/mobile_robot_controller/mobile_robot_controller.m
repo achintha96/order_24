@@ -47,16 +47,12 @@ ds_left   = wb_robot_get_device('ds_left');
 ds_right  = wb_robot_get_device('ds_right');
 ds_dFL  = wb_robot_get_device('dFL');
 ds_dRL  = wb_robot_get_device('dRL');
-box_1 = wb_robot_get_device('box_1');
-box_2 = wb_robot_get_device('box_2');
 
 wb_distance_sensor_enable(ds_centre, TIME_STEP);
 wb_distance_sensor_enable(ds_left, TIME_STEP);
 wb_distance_sensor_enable(ds_right, TIME_STEP);
 wb_distance_sensor_enable(ds_dFL, TIME_STEP);
 wb_distance_sensor_enable(ds_dRL, TIME_STEP);
-wb_distance_sensor_enable(box_1, TIME_STEP);
-wb_distance_sensor_enable(box_2, TIME_STEP);
 
 % initializing GPS module
 gps = wb_robot_get_device('gps');

@@ -69,9 +69,10 @@ while wb_robot_step(TIME_STEP) ~= -1
   elseif STAGE == 2
     presence = wb_connector_get_presence(jaw);
     wb_connector_lock(jaw)
-    theta_1 = -theta_1;
-    theta_2 = -theta_2;
-    theta_3 = -theta_3;
+    % theta_1 = -theta_1;
+    % theta_2 = -theta_2;
+    % theta_3 = -theta_3;
+    [theta_1,theta_2,theta_3] = get_IK(-0.2,0,link_1,link_2,link_3);
     STAGE = 3
   elseif STAGE == 3
     [vel_1,L1_con] = is_rotated(theta_1, pos_1);
