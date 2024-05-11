@@ -60,6 +60,11 @@ wb_distance_sensor_enable(box_1, TIME_STEP);
 box_2 = wb_robot_get_device('load_sensor_2');
 wb_distance_sensor_enable(box_2, TIME_STEP);
 
+ds_dFL = wb_robot_get_device('ds_dFL');
+wb_distance_sensor_enable(ds_dFL, TIME_STEP);
+ds_dRL = wb_robot_get_device('ds_dRL');
+wb_distance_sensor_enable(ds_dRL, TIME_STEP);
+
 % initializing GPS module
 gps = wb_robot_get_device('gps');
 wb_gps_enable(gps, TIME_STEP);
@@ -365,7 +370,12 @@ while wb_robot_step(TIME_STEP) ~= -1
         vel_3 = 0;
         vel_4 = 0;
         SUBSTAGE = 0;
-        STAGE = 6;
+        % STAGE = 6;
+        if TARGET(1) == DESTINATION(1) & TARGET(2) == DESTINATION(2) 
+          STAGE = 100
+        else
+          STAGE = 6;
+        end
       else
         vel_1 = MAX_OMEGA;
         vel_2 = MAX_OMEGA;
