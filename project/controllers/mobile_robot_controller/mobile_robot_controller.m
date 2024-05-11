@@ -129,10 +129,11 @@ while wb_robot_step(TIME_STEP) ~= -1
       REV_SPD = get_rev_speed(bearing,target_bearing,MAX_OMEGA);
       
       if imabsdiff(bearing,target_bearing) < 0.02
-        vel_1 = MAX_OMEGA;
-        vel_2 = MAX_OMEGA;
-        vel_3 = MAX_OMEGA;
-        vel_4 = MAX_OMEGA;
+        [vel_1, vel_2, vel_3, vel_4] = traverse(MAX_OMEGA,1);
+        % vel_1 = MAX_OMEGA;
+        % vel_2 = MAX_OMEGA;
+        % vel_3 = MAX_OMEGA;
+        % vel_4 = MAX_OMEGA;
       elseif target_bearing>bearing
         %revolve right
         vel_1 = REV_SPD;
@@ -172,10 +173,7 @@ while wb_robot_step(TIME_STEP) ~= -1
       abs_diff = imabsdiff( y,current_pos(2))
       if abs_diff < 0.1
         wb_console_print(strcat('STAGE: ', num2str(STAGE), '  current_x: ', num2str(current_pos(1)), '  current_y: ', num2str(current_pos(2)), '  calculated y: ', num2str(y)), WB_STDOUT);
-        vel_1 = MAX_OMEGA;
-        vel_2 = MAX_OMEGA;
-        vel_3 = MAX_OMEGA;
-        vel_4 = MAX_OMEGA;
+        [vel_1, vel_2, vel_3, vel_4] = traverse(MAX_OMEGA,1);
       else
         [vel_1, vel_2, vel_3, vel_4] = stop();
         SUBSTAGE = 0;
@@ -314,10 +312,7 @@ while wb_robot_step(TIME_STEP) ~= -1
           SUBSTAGE = 0
           [vel_1, vel_2, vel_3, vel_4] = stop();
         else
-          vel_1 = MAX_OMEGA;
-          vel_2 = MAX_OMEGA;
-          vel_3 = MAX_OMEGA;
-          vel_4 = MAX_OMEGA;
+          [vel_1, vel_2, vel_3, vel_4] = traverse(MAX_OMEGA,1);
         end
       end
       % wb_console_print(strcat('STAGE: ', num2str(STAGE), '  SUBSTAGE: ', num2str(SUBSTAGE), '  center_ds: ', num2str(value_centre)), WB_STDOUT);
@@ -343,10 +338,11 @@ while wb_robot_step(TIME_STEP) ~= -1
           TARGET_ORIENTATON = DESTINATION_ORIENTATON
         end
       else
-        vel_1 = -MAX_OMEGA;
-        vel_2 = -MAX_OMEGA;
-        vel_3 = -MAX_OMEGA;
-        vel_4 = -MAX_OMEGA;
+        [vel_1, vel_2, vel_3, vel_4] = traverse(MAX_OMEGA,-1);
+        % vel_1 = -MAX_OMEGA;
+        % vel_2 = -MAX_OMEGA;
+        % vel_3 = -MAX_OMEGA;
+        % vel_4 = -MAX_OMEGA;
       end
   elseif STAGE == 100
     wb_console_print(strcat('STAGE: ', num2str(STAGE), ' Arrived destination '), WB_STDOUT);
