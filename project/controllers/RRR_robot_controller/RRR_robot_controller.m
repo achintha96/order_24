@@ -41,6 +41,8 @@ wb_motor_set_velocity(motor_3, vel_3);
 encoder_3 = wb_robot_get_device('link_3_encoder');
 wb_position_sensor_enable(encoder_3, TIME_STEP)
 
+delivery_robot_sensor = wb_robot_get_device('delivery_robot_sensor');
+wb_distance_sensor_enable(delivery_robot_sensor, TIME_STEP);
 
 while wb_robot_step(TIME_STEP) ~= -1
   
@@ -48,10 +50,11 @@ while wb_robot_step(TIME_STEP) ~= -1
   pos_2 = wb_position_sensor_get_value(encoder_2);
   pos_3 = wb_position_sensor_get_value(encoder_3);
   
+  delivery_available = wb_distance_sensor_get_value(delivery_robot_sensor);
   % wb_console_print(strcat('STAGE: ', num2str(STAGE)), WB_STDOUT);
   if STAGE == 0
-    % if robot_presence < 1000
-    if 1 < 1000
+    if delivery_available < 1000
+    % if 1 < 1000
       [theta_1,theta_2,theta_3] = get_IK(target_x,target_y,link_1,link_2,link_3);
       vel_1 = 0;
       vel_2 = 0;
@@ -69,9 +72,6 @@ while wb_robot_step(TIME_STEP) ~= -1
   elseif STAGE == 2
     presence = wb_connector_get_presence(jaw);
     wb_connector_lock(jaw)
-    % theta_1 = -theta_1;
-    % theta_2 = -theta_2;
-    % theta_3 = -theta_3;
     [theta_1,theta_2,theta_3] = get_IK(-0.2,0,link_1,link_2,link_3);
     STAGE = 3
   elseif STAGE == 3
@@ -85,6 +85,17 @@ while wb_robot_step(TIME_STEP) ~= -1
   elseif STAGE == 4
     wb_connector_unlock(jaw)
     STAGE = 5
+    theta_1 = -theta_1;
+    theta_2 = -theta_2;
+    theta_3 = -theta_3;
+  elseif STAGE == 5
+    [vel_1,L1_con] = is_rotated(theta_1, pos_1);
+    [vel_2,L2_con] = is_rotated(theta_2, pos_2);
+    [vel_3,L3_con] = is_rotated(theta_3, pos_3);
+    
+    if L1_con * L2_con * L3_con == 1
+      STAGE = 6
+    end
   end
 
   wb_motor_set_velocity(motor_1, vel_1);

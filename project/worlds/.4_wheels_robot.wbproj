@@ -5,6 +5,7 @@ sceneTreePerspectives: 000000ff000000010000000300000022000000c0000000fa010000000
 maximizedDockId: -1
 centralWidgetVisible: 1
 orthographicViewHeight: 1
-textFiles: 0 "controllers/mobile_robot_controller/mobile_robot_controller.m" "controllers/RRR_robot_controller/is_rotated.m" "controllers/mobile_robot_controller/get_bearing.m"
+textFiles: 3 "controllers/mobile_robot_controller/mobile_robot_controller.m" "controllers/RRR_robot_controller/is_rotated.m" "controllers/mobile_robot_controller/get_bearing.m" "controllers/RRR_robot_controller/RRR_robot_controller.m"
+globalOptionalRendering: DistanceSensorRays
 consoles: Console:robot:All
 consoles: Console:mobile_robot:All

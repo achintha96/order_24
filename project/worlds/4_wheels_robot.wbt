@@ -8,8 +8,8 @@ WorldInfo {
   basicTimeStep 64
 }
 Viewpoint {
-  orientation -0.3251995371511125 0.030938608010494292 0.9451391768258659 3.064375577099309
-  position 3.923294127270663 -0.4221809169162917 3.924072396090345
+  orientation -0.41016478201158996 0.0035544735068760006 0.9120045050960404 3.2070594333514775
+  position 0.6259331998137592 0.03444753264813828 0.6662196415231266
 }
 TexturedBackground {
 }
@@ -400,6 +400,15 @@ DEF RRR_robot Robot {
         }
       }
     }
+    DistanceSensor {
+      translation -0.16 -0.05 -0.05
+      rotation 0 0 1 1.5708
+      name "delivery_robot_sensor"
+      lookupTable [
+        0 0 0
+        0.2 1000 0
+      ]
+    }
   ]
   boundingObject USE base_shape
   physics Physics {
@@ -412,7 +421,7 @@ DEF load Solid {
   children [
     DEF box_shape Shape {
       appearance PBRAppearance {
-        baseColor 1 0 0
+        baseColor 1 1 0
         roughness 1
         metalness 0
       }
