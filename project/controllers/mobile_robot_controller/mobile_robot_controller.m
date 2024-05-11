@@ -67,9 +67,9 @@ wb_compass_enable(compass, TIME_STEP);
 while wb_robot_step(TIME_STEP) ~= -1
   
   % reading distance sensors
-  value_centre = wb_distance_sensor_get_value(ds_centre);
-  value_left = wb_distance_sensor_get_value(ds_left);
-  value_right = wb_distance_sensor_get_value(ds_right);
+  value_centre = wb_distance_sensor_get_value(ds_centre)
+  value_left = wb_distance_sensor_get_value(ds_left)
+  value_right = wb_distance_sensor_get_value(ds_right)
   
   % reading gps module
   current_pos = wb_gps_get_values(gps)
@@ -349,9 +349,25 @@ while wb_robot_step(TIME_STEP) ~= -1
         vel_2 = 0;
         vel_3 = 0;
         vel_4 = 0;
+        SUBSTAGE = 2
+        % SUBSTAGE = 0;
+        % STAGE = 6;
+        end
+    elseif SUBSTAGE == 2
+      if value_left < 230
+        vel_1 = 0;
+        vel_2 = 0;
+        vel_3 = 0;
+        vel_4 = 0;
         SUBSTAGE = 0;
         STAGE = 6;
+      else
+        vel_1 = MAX_OMEGA;
+        vel_2 = MAX_OMEGA;
+        vel_3 = MAX_OMEGA;
+        vel_4 = MAX_OMEGA;
       end
+      % wb_console_print(strcat('STAGE: ', num2str(STAGE), '  SUBSTAGE: ', num2str(SUBSTAGE), '  center_ds: ', num2str(value_centre)), WB_STDOUT);
     end
   elseif STAGE == 6 %waiting for box
     box_presence_1 = wb_distance_sensor_get_value(box_1);

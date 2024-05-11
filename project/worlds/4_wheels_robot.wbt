@@ -8,8 +8,8 @@ WorldInfo {
   basicTimeStep 64
 }
 Viewpoint {
-  orientation -0.2999388196779445 0.36849601984696606 0.8799132842542757 1.5982202230761116
-  position -0.2590625186178322 -8.875320265012473 8.555227700303034
+  orientation -0.3251995371511125 0.030938608010494292 0.9451391768258659 3.064375577099309
+  position 3.923294127270663 -0.4221809169162917 3.924072396090345
 }
 TexturedBackground {
 }
@@ -179,7 +179,7 @@ Robot {
           }
         }
       ]
-      name "ds_center"
+      name "ds_centre"
     }
     GPS {
     }
@@ -196,7 +196,7 @@ Robot {
   controller "mobile_robot_controller"
 }
 DEF RRR_robot Robot {
-  translation 0 0 0.15
+  translation -0.045 0.1 0.15
   rotation 0 0 1 3.14159
   children [
     Solid {
@@ -407,7 +407,7 @@ DEF RRR_robot Robot {
   controller "RRR_robot_controller"
 }
 DEF load Solid {
-  translation 0.1 0.25 0.15
+  translation 0.055 0.35 0.15
   rotation 0 1 0 -1.5707953071795862
   children [
     DEF box_shape Shape {
