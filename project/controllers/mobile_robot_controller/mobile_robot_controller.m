@@ -17,8 +17,8 @@ vel_3 = 0;
 vel_4 = 0;
 TARGET = [0.1, -0.35];
 TARGET_ORIENTATON = 0;
-DESTINATION = [5, 0.26];
-DESTINATION_ORIENTATON = 270;
+DESTINATION = [2.5, 0.03];
+DESTINATION_ORIENTATON = 90;
 OBSTACLE_THR = 500;
 target_bearing = 0;
 last_bearing = 0;
@@ -54,6 +54,11 @@ wb_distance_sensor_enable(ds_left, TIME_STEP);
 wb_distance_sensor_enable(ds_right, TIME_STEP);
 wb_distance_sensor_enable(ds_dFL, TIME_STEP);
 wb_distance_sensor_enable(ds_dRL, TIME_STEP);
+
+box_1 = wb_robot_get_device('load_sensor_1');
+wb_distance_sensor_enable(box_1, TIME_STEP);
+box_2 = wb_robot_get_device('load_sensor_2');
+wb_distance_sensor_enable(box_2, TIME_STEP);
 
 % initializing GPS module
 gps = wb_robot_get_device('gps');
@@ -378,16 +383,36 @@ while wb_robot_step(TIME_STEP) ~= -1
     vel_3 = 0;
     vel_4 = 0;
     if box_presence_1 < 1000 | box_presence_2 < 1000
-      if TARGET(1) == DESTINATION(1) & TARGET(2) == DESTINATION(2) 
-        STAGE = 100
-      else
-        STAGE = 0
-        TARGET(1) = DESTINATION(1)
-        TARGET(2) = DESTINATION(2)
-        TARGET_ORIENTATON = DESTINATION_ORIENTATON
-      end
+      STAGE = 7
+      % if TARGET(1) == DESTINATION(1) & TARGET(2) == DESTINATION(2) 
+        % STAGE = 100
+      % else
+        % STAGE = 0
+        % TARGET(1) = DESTINATION(1)
+        % TARGET(2) = DESTINATION(2)
+        % TARGET_ORIENTATON = DESTINATION_ORIENTATON
+      % end
     end
-    
+  elseif STAGE == 7
+    if value_left > 990
+        vel_1 = 0;
+        vel_2 = 0;
+        vel_3 = 0;
+        vel_4 = 0;
+        if TARGET(1) == DESTINATION(1) & TARGET(2) == DESTINATION(2) 
+          STAGE = 100
+        else
+          STAGE = 0
+          TARGET(1) = DESTINATION(1)
+          TARGET(2) = DESTINATION(2)
+          TARGET_ORIENTATON = DESTINATION_ORIENTATON
+        end
+      else
+        vel_1 = -MAX_OMEGA;
+        vel_2 = -MAX_OMEGA;
+        vel_3 = -MAX_OMEGA;
+        vel_4 = -MAX_OMEGA;
+      end
   elseif STAGE == 100
     wb_console_print(strcat('STAGE: ', num2str(STAGE), ' Arrived destination '), WB_STDOUT);
     vel_1 = 0;

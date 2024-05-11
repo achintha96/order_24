@@ -8,8 +8,8 @@ WorldInfo {
   basicTimeStep 64
 }
 Viewpoint {
-  orientation -0.41016478201158996 0.0035544735068760006 0.9120045050960404 3.2070594333514775
-  position 0.6259331998137592 0.03444753264813828 0.6662196415231266
+  orientation -0.3446822615520155 0.019632321652779748 0.9385140971332876 3.131322111374631
+  position 5.639157866981856 -0.7376985781516925 4.419759110407651
 }
 TexturedBackground {
 }
@@ -185,6 +185,26 @@ Robot {
     }
     Compass {
       rotation 0 0 1 -1.5707953071795862
+    }
+    DistanceSensor {
+      translation 0 0.09 0.04
+      rotation 0 0 1 -1.5707953071795862
+      name "load_sensor_1"
+      lookupTable [
+        0 0 0
+        0.2 1000 0
+      ]
+      numberOfRays 2
+    }
+    DistanceSensor {
+      translation 0.05 -0.09 0.04
+      rotation 0 0 1 1.5708
+      name "load_sensor_2"
+      lookupTable [
+        0 0 0
+        0.2 1000 0
+      ]
+      numberOfRays 2
     }
   ]
   name "mobile_robot"
