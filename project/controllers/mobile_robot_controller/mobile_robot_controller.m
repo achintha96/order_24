@@ -10,17 +10,18 @@ STAGE = 0
 SUBSTAGE = 0
 TIME_STEP = 64;
 MAX_OMEGA = 1.5625;
-REV_SPD = MAX_OMEGA*0.1; %wheel speed in revolution
+REV_SPD = MAX_OMEGA*0.0025; %wheel speed in revolution
 vel_1 = 0;
 vel_2 = 0;
 vel_3 = 0;
 vel_4 = 0;
-TARGET = [1.5, 2];
+TARGET = [0.1, -0.35];
 TARGET_ORIENTATON = 0;
-DESTINATION = [-1.5, 1];
+DESTINATION = [5, 0.26];
 DESTINATION_ORIENTATON = 270;
 OBSTACLE_THR = 500;
 target_bearing = 0;
+last_bearing = 0;
 ccw_turn = 1 % 1--> CCW, -1-->ACCW
 GRADIENT = 0
 INTERCEPT = 0
@@ -71,25 +72,17 @@ while wb_robot_step(TIME_STEP) ~= -1
   value_right = wb_distance_sensor_get_value(ds_right);
   
   % reading gps module
-  current_pos = wb_gps_get_values(gps);
+  current_pos = wb_gps_get_values(gps)
   
   % reading compass module
   current_ori = wb_compass_get_values(compass);
-  rad = atan2(current_ori(2), current_ori(1));
-  bearing = (rad - 1.5708) / pi * 180.0;
-  if bearing < 0.0
-    bearing = bearing + 360.0;
-  end
-  bearing = round(bearing*100);
-  bearing = bearing/100;
-  if bearing == 360
-    bearing=0;
-  end
   
+  bearing = get_bearing(current_ori,last_bearing)
+  last_bearing = bearing + 0
   % stage machine
   if STAGE == 0 % initializations for target
-    dy = TARGET(2)-current_pos(2);
-    dx = TARGET(1)-current_pos(1);
+    dy = TARGET(2)-current_pos(2)
+    dx = TARGET(1)-current_pos(1)
     GRADIENT = dy/dx;
     INTERCEPT = TARGET(2)-(GRADIENT*TARGET(1));
     
@@ -131,7 +124,14 @@ while wb_robot_step(TIME_STEP) ~= -1
       end
       wb_console_print(strcat('STAGE: ', num2str(STAGE), '  bearing: ', num2str(bearing), '  target bearing: ', num2str(target_bearing)), WB_STDOUT);
       %if -1<target_bearing-bearing <1
-      if round(target_bearing)==round(bearing)
+      % if round(target_bearing)==round(bearing)
+      if imabsdiff(bearing,target_bearing) > 2
+        REV_SPD = MAX_OMEGA*0.1;
+      else
+        REV_SPD = MAX_OMEGA*0.0025;
+      end
+      
+      if imabsdiff(bearing,target_bearing) < 0.02
         vel_1 = MAX_OMEGA;
         vel_2 = MAX_OMEGA;
         vel_3 = MAX_OMEGA;
@@ -332,6 +332,13 @@ while wb_robot_step(TIME_STEP) ~= -1
     elseif SUBSTAGE == 1
       wb_console_print(strcat('STAGE: ', num2str(STAGE), '  bearing: ', num2str(bearing), '  target bearing: ', num2str(target_bearing)), WB_STDOUT);
       abs_diff = imabsdiff( bearing, target_bearing)
+      
+      if imabsdiff(bearing,target_bearing) > 2
+        REV_SPD = MAX_OMEGA*0.1;
+      else
+        REV_SPD = MAX_OMEGA*0.0025;
+      end
+      
       if abs_diff>0.2
         vel_1 = REV_SPD*ccw_turn;
         vel_2 = -REV_SPD*ccw_turn;

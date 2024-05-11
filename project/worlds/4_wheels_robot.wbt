@@ -8,19 +8,20 @@ WorldInfo {
   basicTimeStep 64
 }
 Viewpoint {
-  orientation -0.12862856960940935 -0.9632524042425433 0.23579545542948255 5.8348124097203
-  position -1.7942492461920485 0.6336168827353659 1.2063639303058353
+  orientation -0.2999388196779445 0.36849601984696606 0.8799132842542757 1.5982202230761116
+  position -0.2590625186178322 -8.875320265012473 8.555227700303034
 }
 TexturedBackground {
 }
 TexturedBackgroundLight {
+  luminosity 0.5
 }
 Floor {
-  size 4 4
+  size 6 6
 }
 Robot {
-  translation -0.12679 0.4822 0.11
-  rotation 0 0 1 -1.5707953071795862
+  translation -2.47679 -2.5378 0.11
+  rotation 0 0 1 1.5708
   children [
     DEF BODY Shape {
       appearance PBRAppearance {
@@ -34,12 +35,12 @@ Robot {
     }
     DEF WHEEL1 HingeJoint {
       jointParameters HingeJointParameters {
-        axis 0 -1 0
+        axis 0 1 0
         anchor 0.11 0.155 0
       }
       device [
         RotationalMotor {
-          name "wheel1"
+          name "wheel_1"
         }
       ]
       endPoint Solid {
@@ -66,12 +67,12 @@ Robot {
     }
     DEF WHEEL2 HingeJoint {
       jointParameters HingeJointParameters {
-        axis 0 -1 0
+        axis 0 1 0
         anchor 0.11 -0.155 0
       }
       device [
         RotationalMotor {
-          name "wheel2"
+          name "wheel_2"
         }
       ]
       endPoint Solid {
@@ -88,12 +89,12 @@ Robot {
     }
     DEF WHEEL3 HingeJoint {
       jointParameters HingeJointParameters {
-        axis 0 -1 0
+        axis 0 1 0
         anchor -0.11 0.155 0
       }
       device [
         RotationalMotor {
-          name "wheel3"
+          name "wheel_3"
         }
       ]
       endPoint Solid {
@@ -110,12 +111,12 @@ Robot {
     }
     DEF WHEEL4 HingeJoint {
       jointParameters HingeJointParameters {
-        axis 0 -1 0
+        axis 0 1 0
         anchor -0.11 -0.155 0
       }
       device [
         RotationalMotor {
-          name "wheel4"
+          name "wheel_4"
         }
       ]
       endPoint Solid {
@@ -183,6 +184,7 @@ Robot {
     GPS {
     }
     Compass {
+      rotation 0 0 1 -1.5707953071795862
     }
   ]
   name "mobile_robot"
@@ -191,10 +193,11 @@ Robot {
     density -1
     mass 1
   }
-  controller "<none>"
+  controller "mobile_robot_controller"
 }
 DEF RRR_robot Robot {
   translation 0 0 0.15
+  rotation 0 0 1 3.14159
   children [
     Solid {
       children [
@@ -404,7 +407,7 @@ DEF RRR_robot Robot {
   controller "RRR_robot_controller"
 }
 DEF load Solid {
-  translation -0.1 -0.25 0.15
+  translation 0.1 0.25 0.15
   rotation 0 1 0 -1.5707953071795862
   children [
     DEF box_shape Shape {
