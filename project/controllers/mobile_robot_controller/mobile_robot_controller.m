@@ -238,21 +238,23 @@ while wb_robot_step(TIME_STEP) ~= -1
       
       [vel_1, vel_2, vel_3, vel_4] = stop();
       SUBSTAGE = 1;
-      accw_cost = 0
-      ccw_cost = 0
-      if bearing>target_bearing
-        accw_cost = bearing - target_bearing
-        ccw_cost = 360 - bearing + target_bearing
-      else
-        ccw_cost = target_bearing - bearing
-        accw_cost = 360 - target_bearing + bearing
-      end
+      ccw_turn = get_optimal_turn_direction(bearing,target_bearing);
+      % accw_cost = 0
+      % ccw_cost = 0
+      % if bearing>target_bearing
+        % accw_cost = bearing - target_bearing
+        % ccw_cost = 360 - bearing + target_bearing
+      % else
+        % ccw_cost = target_bearing - bearing
+        % accw_cost = 360 - target_bearing + bearing
+      % end
       
-      if accw_cost > ccw_cost
-        ccw_turn = 1
-      else
-        ccw_turn = -1
-      end
+      % if accw_cost > ccw_cost
+        % ccw_turn = 1
+      % else
+        % ccw_turn = -1
+      % end
+      
     elseif SUBSTAGE == 1
       wb_console_print(strcat('STAGE: ', num2str(STAGE), '  bearing: ', num2str(bearing), '  target bearing: ', num2str(target_bearing)), WB_STDOUT);
       abs_diff = imabsdiff( bearing, target_bearing)
@@ -276,21 +278,23 @@ while wb_robot_step(TIME_STEP) ~= -1
       target_bearing = TARGET_ORIENTATON
       [vel_1, vel_2, vel_3, vel_4] = stop();
       SUBSTAGE = 1;
-      accw_cost = 0
-      ccw_cost = 0
-      if bearing>target_bearing
-        accw_cost = bearing - target_bearing
-        ccw_cost = 360 - bearing + target_bearing
-      else
-        ccw_cost = target_bearing - bearing
-        accw_cost = 360 - target_bearing + bearing
-      end
       
-      if accw_cost > ccw_cost
-        ccw_turn = 1
-      else
-        ccw_turn = -1
-      end
+      ccw_turn = get_optimal_turn_direction(bearing,target_bearing);
+      % accw_cost = 0
+      % ccw_cost = 0
+      % if bearing>target_bearing
+        % accw_cost = bearing - target_bearing
+        % ccw_cost = 360 - bearing + target_bearing
+      % else
+        % ccw_cost = target_bearing - bearing
+        % accw_cost = 360 - target_bearing + bearing
+      % end
+      
+      % if accw_cost > ccw_cost
+        % ccw_turn = 1
+      % else
+        % ccw_turn = -1
+      % end
       
     elseif SUBSTAGE == 1
       wb_console_print(strcat('STAGE: ', num2str(STAGE), '  bearing: ', num2str(bearing), '  target bearing: ', num2str(target_bearing)), WB_STDOUT);
