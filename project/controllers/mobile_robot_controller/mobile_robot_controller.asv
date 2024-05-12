@@ -11,8 +11,10 @@ SUBSTAGE = 0
 TIME_STEP = 64;
 MAX_ANGULAR_VEL = 1.5625;
 REV_SPD = MAX_ANGULAR_VEL*0.0025; 
-GRADIENT = 0
-INTERCEPT = 0
+vel_1 = 0;
+vel_2 = 0;
+vel_3 = 0;
+vel_4 = 0;
 CURRENT_TARGET = [0.1, -0.35];
 CURRENT_TARGET_ORIENTATON = 0;
 DELIVERY_TARGET = [2.5, 0.03];
@@ -20,12 +22,9 @@ DELIVERY_TARGET_ORIENTATON = 90;
 OBSTACLE_THR = 500;
 target_bearing = 0;
 last_bearing = 0;
-revolve_direction = 1 % 1--> CW, -1-->ACW
-vel_1 = 0;
-vel_2 = 0;
-vel_3 = 0;
-vel_4 = 0;
-
+revolve_direction = 1 % 1--> CW, -1-->ACCW
+GRADIENT = 0
+INTERCEPT = 0
 
 % initializing wheel_1
 wheel_1 = wb_robot_get_device('wheel_1');
