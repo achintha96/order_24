@@ -26,33 +26,40 @@ ccw_turn = 1 % 1--> CCW, -1-->ACCW
 GRADIENT = 0
 INTERCEPT = 0
 
-% initializing motors
+% initializing wheel_1
 wheel_1 = wb_robot_get_device('wheel_1');
-wheel_2 = wb_robot_get_device('wheel_2');
-wheel_3 = wb_robot_get_device('wheel_3');
-wheel_4 = wb_robot_get_device('wheel_4');
-
 wb_motor_set_position(wheel_1, inf)
-wb_motor_set_position(wheel_2, inf)
-wb_motor_set_position(wheel_3, inf)
-wb_motor_set_position(wheel_4, inf)
-
 wb_motor_set_velocity(wheel_1, 0);
+
+% initializing wheel_2
+wheel_2 = wb_robot_get_device('wheel_2');
+wb_motor_set_position(wheel_2, inf)
 wb_motor_set_velocity(wheel_2, 0);
+
+% initializing wheel_3
+wheel_3 = wb_robot_get_device('wheel_3');
+wb_motor_set_position(wheel_3, inf)
 wb_motor_set_velocity(wheel_3, 0);
+
+% initializing wheel_4
+wheel_4 = wb_robot_get_device('wheel_4');
+wb_motor_set_position(wheel_4, inf)
 wb_motor_set_velocity(wheel_4, 0);
 
 % initializing distance sensors
 ds_centre = wb_robot_get_device('ds_centre');
-ds_left   = wb_robot_get_device('ds_left');
-ds_right  = wb_robot_get_device('ds_right');
-ds_dFL  = wb_robot_get_device('dFL');
-ds_dRL  = wb_robot_get_device('dRL');
-
 wb_distance_sensor_enable(ds_centre, TIME_STEP);
+
+ds_left   = wb_robot_get_device('ds_left');
 wb_distance_sensor_enable(ds_left, TIME_STEP);
+
+ds_right  = wb_robot_get_device('ds_right');
 wb_distance_sensor_enable(ds_right, TIME_STEP);
+
+ds_dFL  = wb_robot_get_device('dFL');
 wb_distance_sensor_enable(ds_dFL, TIME_STEP);
+
+ds_dRL  = wb_robot_get_device('dRL');
 wb_distance_sensor_enable(ds_dRL, TIME_STEP);
 
 box_1 = wb_robot_get_device('load_sensor_1');
@@ -130,10 +137,7 @@ while wb_robot_step(TIME_STEP) ~= -1
       
       if imabsdiff(bearing,target_bearing) < 0.02
         [vel_1, vel_2, vel_3, vel_4] = traverse(MAX_OMEGA,1);
-        % vel_1 = MAX_OMEGA;
-        % vel_2 = MAX_OMEGA;
-        % vel_3 = MAX_OMEGA;
-        % vel_4 = MAX_OMEGA;
+        
       elseif target_bearing>bearing
         %revolve right
         vel_1 = REV_SPD;
@@ -339,10 +343,7 @@ while wb_robot_step(TIME_STEP) ~= -1
         end
       else
         [vel_1, vel_2, vel_3, vel_4] = traverse(MAX_OMEGA,-1);
-        % vel_1 = -MAX_OMEGA;
-        % vel_2 = -MAX_OMEGA;
-        % vel_3 = -MAX_OMEGA;
-        % vel_4 = -MAX_OMEGA;
+        
       end
   elseif STAGE == 100
     wb_console_print(strcat('STAGE: ', num2str(STAGE), ' Arrived destination '), WB_STDOUT);
