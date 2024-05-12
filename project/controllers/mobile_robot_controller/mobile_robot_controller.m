@@ -20,7 +20,7 @@ DELIVERY_TARGET_ORIENTATON = 90;
 OBSTACLE_THR = 500;
 target_bearing = 0;
 last_bearing = 0;
-revolve_direction = 1 % 1--> CW, -1-->ACW
+revolve_direction = 1 % 1 is clockwise
 vel_1 = 0;
 vel_2 = 0;
 vel_3 = 0;
@@ -85,43 +85,37 @@ wb_compass_enable(compass, TIME_STEP);
 while wb_robot_step(TIME_STEP) ~= -1
   
   % reading distance sensors
-  value_centre = wb_distance_sensor_get_value(ds_centre)
-  value_left = wb_distance_sensor_get_value(ds_left)
-  value_right = wb_distance_sensor_get_value(ds_right)
+  ds_val_centre = wb_distance_sensor_get_value(ds_centre)
+  ds_val_left = wb_distance_sensor_get_value(ds_left)
+  ds_val_right = wb_distance_sensor_get_value(ds_right)
   
   % reading gps module
-  current_pos = wb_gps_get_values(gps)
+  current_gps = wb_gps_get_values(gps)
   
   % reading compass module
-  current_ori = wb_compass_get_values(compass);
+  current_orientation = wb_compass_get_values(compass);
   
-  bearing = get_bearing(current_ori,last_bearing)
-  last_bearing = bearing + 0
-  % stage machine
-  if STAGE == 0 % initializations for target
-    dy = CURRENT_TARGET(2)-current_pos(2)
-    dx = CURRENT_TARGET(1)-current_pos(1)
-    GRADIENT = dy/dx;
+  bearing = get_bearing(current_orientation,last_bearing);
+  last_bearing = bearing + 0;
+  
+  if STAGE == 0 
+    [vel_1, vel_2, vel_3, vel_4] = stop();  
+    GRADIENT = (CURRENT_TARGET(2)-current_gps(2))/(CURRENT_TARGET(1)-current_gps(1));
     INTERCEPT = CURRENT_TARGET(2)-(GRADIENT*CURRENT_TARGET(1));
-    
-    [vel_1, vel_2, vel_3, vel_4] = stop();
-    STAGE = 1;
-    wb_console_print(strcat('STAGE: ', num2str(STAGE), '  y = ', num2str(GRADIENT), '  x + ', num2str(INTERCEPT)), WB_STDOUT);
+    STAGE = 1
   elseif STAGE == 1; % moving towards target
-    if round(CURRENT_TARGET(1)*10)==round(current_pos(1)*10) & round(CURRENT_TARGET(2)*10)==round(current_pos(2)*10)
+    if round(CURRENT_TARGET(1)*10)==round(current_gps(1)*10) & round(CURRENT_TARGET(2)*10)==round(current_gps(2)*10)
       %checking for arrival of destination
       [vel_1, vel_2, vel_3, vel_4] = stop();
-      STAGE = 5; %go to arrival orientation correction
-    elseif value_centre<OBSTACLE_THR | value_left<OBSTACLE_THR | value_right<OBSTACLE_THR 
+      STAGE = 5 %go to arrival orientation correction
+    elseif ds_val_centre<OBSTACLE_THR | ds_val_left<OBSTACLE_THR | ds_val_right<OBSTACLE_THR 
       %checking for obstacle -> if true right revolve
-      wb_console_print(strcat('STAGE: ', num2str(STAGE), '  ds_centre: ', num2str(value_centre), '  ds_left: ', num2str(value_left), '  ds_right: ', num2str(value_right)), WB_STDOUT);
+      wb_console_print(strcat('STAGE: ', num2str(STAGE), '  ds_centre: ', num2str(ds_val_centre), '  ds_left: ', num2str(ds_val_left), '  ds_right: ', num2str(ds_val_right)), WB_STDOUT);
       [vel_1, vel_2, vel_3, vel_4] = stop();
-      STAGE = 2; % revolve stage
+      STAGE = 2 % revolve stage
     else
       % calculating the bearing of target wrt current pos
-      %wb_console_print(strcat('x: ', num2str(current_pos(1)), ' y :', num2str(current_pos(2))), WB_STDOUT);
-      angle_rad = atan2(CURRENT_TARGET(1)-current_pos(1),CURRENT_TARGET(2)-current_pos(2));
-      %wb_console_print(strcat('dx: ', num2str(TARGET(1)-current_pos(1)), ' dy :', num2str(TARGET(2)-current_pos(2))), WB_STDOUT);
+      angle_rad = atan2(CURRENT_TARGET(1)-current_gps(1),CURRENT_TARGET(2)-current_gps(2));
       target_bearing = (angle_rad) / pi * 180.0;
       if target_bearing < 0.0
         target_bearing = target_bearing + 360.0;
@@ -145,14 +139,13 @@ while wb_robot_step(TIME_STEP) ~= -1
       else
         %revolve left
         [vel_1, vel_2, vel_3, vel_4] = spin_right(REV_SPD,-1);
-        
       end 
     end
   elseif STAGE == 2 % turn right and going around obstacle - bug algorithm
     if SUBSTAGE == 0
       target_bearing = mod(bearing + 90,360)
       [vel_1, vel_2, vel_3, vel_4] = stop();
-      SUBSTAGE = 1;
+      SUBSTAGE = 1
     elseif SUBSTAGE == 1
       wb_console_print(strcat('STAGE: ', num2str(STAGE), '  bearing: ', num2str(bearing), '  target bearing: ', num2str(target_bearing)), WB_STDOUT);
       
@@ -163,28 +156,28 @@ while wb_robot_step(TIME_STEP) ~= -1
         
       else
         [vel_1, vel_2, vel_3, vel_4] = stop();
-        SUBSTAGE = 2;
+        SUBSTAGE = 2
         %STAGE = 5;
       end
     elseif SUBSTAGE == 2
-      y = (GRADIENT*current_pos(1))+INTERCEPT
-      abs_diff = imabsdiff( y,current_pos(2))
+      y = (GRADIENT*current_gps(1))+INTERCEPT
+      abs_diff = imabsdiff( y,current_gps(2))
       if abs_diff < 0.1
-        wb_console_print(strcat('STAGE: ', num2str(STAGE), '  current_x: ', num2str(current_pos(1)), '  current_y: ', num2str(current_pos(2)), '  calculated y: ', num2str(y)), WB_STDOUT);
+        wb_console_print(strcat('STAGE: ', num2str(STAGE), '  current_x: ', num2str(current_gps(1)), '  current_y: ', num2str(current_gps(2)), '  calculated y: ', num2str(y)), WB_STDOUT);
         [vel_1, vel_2, vel_3, vel_4] = traverse(MAX_ANGULAR_VEL,1);
       else
         [vel_1, vel_2, vel_3, vel_4] = stop();
-        SUBSTAGE = 0;
-        STAGE = 3;
+        SUBSTAGE = 0
+        STAGE = 3
       end
     end
   elseif STAGE == 3 %wall following
-    y = (GRADIENT*current_pos(1))+INTERCEPT
-    abs_diff = imabsdiff( y,current_pos(2))
+    y = (GRADIENT*current_gps(1))+INTERCEPT
+    abs_diff = imabsdiff( y,current_gps(2))
     if abs_diff < 0.09
-      wb_console_print(strcat('STAGE*: ', num2str(STAGE), '  current_x: ', num2str(current_pos(1)), '  current_y: ', num2str(current_pos(2)), '  calculated y: ', num2str(y)), WB_STDOUT);
+      wb_console_print(strcat('STAGE*: ', num2str(STAGE), '  current_x: ', num2str(current_gps(1)), '  current_y: ', num2str(current_gps(2)), '  calculated y: ', num2str(y)), WB_STDOUT);
       [vel_1, vel_2, vel_3, vel_4] = stop();
-      STAGE = 4;
+      STAGE = 4
     
     else
       dFL = wb_distance_sensor_get_value(ds_dFL);
@@ -214,9 +207,8 @@ while wb_robot_step(TIME_STEP) ~= -1
   elseif STAGE == 4  
     if SUBSTAGE == 0
       % calculating the bearing of target wrt current pos
-      %wb_console_print(strcat('x: ', num2str(current_pos(1)), ' y :', num2str(current_pos(2))), WB_STDOUT);
-      angle_rad = atan2(CURRENT_TARGET(1)-current_pos(1),CURRENT_TARGET(2)-current_pos(2));
-      %wb_console_print(strcat('dx: ', num2str(TARGET(1)-current_pos(1)), ' dy :', num2str(TARGET(2)-current_pos(2))), WB_STDOUT);
+      
+      angle_rad = atan2(CURRENT_TARGET(1)-current_gps(1),CURRENT_TARGET(2)-current_gps(2));
       target_bearing = (angle_rad) / pi * 180.0;
       if target_bearing < 0.0
         target_bearing = target_bearing + 360.0;
@@ -228,7 +220,7 @@ while wb_robot_step(TIME_STEP) ~= -1
       end
       
       [vel_1, vel_2, vel_3, vel_4] = stop();
-      SUBSTAGE = 1;
+      SUBSTAGE = 1
       revolve_direction = get_optimal_turn_direction(bearing,target_bearing);
       
     elseif SUBSTAGE == 1
@@ -242,15 +234,15 @@ while wb_robot_step(TIME_STEP) ~= -1
         
       else
         [vel_1, vel_2, vel_3, vel_4] = stop();
-        SUBSTAGE = 0;
-        STAGE = 1;
+        SUBSTAGE = 0
+        STAGE = 1
       end
     end
   elseif STAGE == 5 %correcting orientaton after arrival
     if SUBSTAGE == 0
       target_bearing = CURRENT_TARGET_ORIENTATON
       [vel_1, vel_2, vel_3, vel_4] = stop();
-      SUBSTAGE = 1;
+      SUBSTAGE = 1
       
       revolve_direction = get_optimal_turn_direction(bearing,target_bearing);
       
@@ -270,13 +262,13 @@ while wb_robot_step(TIME_STEP) ~= -1
         % STAGE = 6;
         end
     elseif SUBSTAGE == 2
-      if value_left < 230
+      if ds_val_left < 230
         [vel_1, vel_2, vel_3, vel_4] = stop();
-        SUBSTAGE = 0;
-        STAGE = 6;
+        SUBSTAGE = 0
+        STAGE = 6
       else
         if CURRENT_TARGET(1) == DELIVERY_TARGET(1) & CURRENT_TARGET(2) == DELIVERY_TARGET(2) 
-          STAGE = 100
+          STAGE = 8
           SUBSTAGE = 0
           [vel_1, vel_2, vel_3, vel_4] = stop();
         else
@@ -295,10 +287,10 @@ while wb_robot_step(TIME_STEP) ~= -1
       
     end
   elseif STAGE == 7
-    if value_left > 990
+    if ds_val_left > 990
         [vel_1, vel_2, vel_3, vel_4] = stop();
         if CURRENT_TARGET(1) == DELIVERY_TARGET(1) & CURRENT_TARGET(2) == DELIVERY_TARGET(2) 
-          STAGE = 100
+          STAGE = 8
         else
           STAGE = 0
           CURRENT_TARGET(1) = DELIVERY_TARGET(1)
@@ -307,9 +299,8 @@ while wb_robot_step(TIME_STEP) ~= -1
         end
       else
         [vel_1, vel_2, vel_3, vel_4] = traverse(MAX_ANGULAR_VEL,-1);
-        
       end
-  elseif STAGE == 100
+  elseif STAGE == 8
     wb_console_print(strcat('STAGE: ', num2str(STAGE), ' Arrived destination '), WB_STDOUT);
     [vel_1, vel_2, vel_3, vel_4] = stop();
   else
