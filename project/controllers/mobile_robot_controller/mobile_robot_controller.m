@@ -140,16 +140,18 @@ while wb_robot_step(TIME_STEP) ~= -1
         
       elseif target_bearing>bearing
         %revolve right
-        vel_1 = REV_SPD;
-        vel_2 = -REV_SPD;
-        vel_3 = REV_SPD;
-        vel_4 = -REV_SPD;
+        [vel_1, vel_2, vel_3, vel_4] = spin_right(REV_SPD,1);
+        % vel_1 = REV_SPD;
+        % vel_2 = -REV_SPD;
+        % vel_3 = REV_SPD;
+        % vel_4 = -REV_SPD;
       else
         %revolve left
-        vel_1 = -REV_SPD;
-        vel_2 = REV_SPD;
-        vel_3 = -REV_SPD;
-        vel_4 = REV_SPD;
+        [vel_1, vel_2, vel_3, vel_4] = spin_right(REV_SPD,-1);
+        % vel_1 = -REV_SPD;
+        % vel_2 = REV_SPD;
+        % vel_3 = -REV_SPD;
+        % vel_4 = REV_SPD;
       end 
     end
   elseif STAGE == 2 % turn right and going around obstacle - bug algorithm
@@ -163,10 +165,11 @@ while wb_robot_step(TIME_STEP) ~= -1
       REV_SPD = get_rev_speed(bearing,target_bearing,MAX_OMEGA);
       
       if bearing<target_bearing
-        vel_1 = REV_SPD;
-        vel_2 = -REV_SPD;
-        vel_3 = REV_SPD;
-        vel_4 = -REV_SPD;
+        [vel_1, vel_2, vel_3, vel_4] = spin_right(REV_SPD,1);
+        % vel_1 = REV_SPD;
+        % vel_2 = -REV_SPD;
+        % vel_3 = REV_SPD;
+        % vel_4 = -REV_SPD;
       else
         [vel_1, vel_2, vel_3, vel_4] = stop();
         SUBSTAGE = 2;
@@ -257,10 +260,11 @@ while wb_robot_step(TIME_STEP) ~= -1
       REV_SPD = get_rev_speed(bearing,target_bearing,MAX_OMEGA);
       
       if abs_diff>0.1
-        vel_1 = REV_SPD*ccw_turn;
-        vel_2 = -REV_SPD*ccw_turn;
-        vel_3 = REV_SPD*ccw_turn;
-        vel_4 = -REV_SPD*ccw_turn;
+        [vel_1, vel_2, vel_3, vel_4] = spin_right(REV_SPD,ccw_turn);
+        % vel_1 = REV_SPD*ccw_turn;
+        % vel_2 = -REV_SPD*ccw_turn;
+        % vel_3 = REV_SPD*ccw_turn;
+        % vel_4 = -REV_SPD*ccw_turn;
       else
         [vel_1, vel_2, vel_3, vel_4] = stop();
         SUBSTAGE = 0;
@@ -295,10 +299,11 @@ while wb_robot_step(TIME_STEP) ~= -1
       REV_SPD = get_rev_speed(bearing,target_bearing,MAX_OMEGA);
       
       if abs_diff>0.2
-        vel_1 = REV_SPD*ccw_turn;
-        vel_2 = -REV_SPD*ccw_turn;
-        vel_3 = REV_SPD*ccw_turn;
-        vel_4 = -REV_SPD*ccw_turn;
+        [vel_1, vel_2, vel_3, vel_4] = spin_right(REV_SPD,ccw_turn);
+        % vel_1 = REV_SPD*ccw_turn;
+        % vel_2 = -REV_SPD*ccw_turn;
+        % vel_3 = REV_SPD*ccw_turn;
+        % vel_4 = -REV_SPD*ccw_turn;
       else
         [vel_1, vel_2, vel_3, vel_4] = stop();
         SUBSTAGE = 2
