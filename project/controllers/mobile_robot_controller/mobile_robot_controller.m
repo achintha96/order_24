@@ -17,6 +17,7 @@ CURRENT_TARGET_ORIENTATON = 0;
 DELIVERY_TARGET = [2.5, 0.03];
 DELIVERY_TARGET_ORIENTATON = 90;
 OBSTACLE_THR = 500;
+
 target_bearing = 0;
 last_bearing = 0;
 revolve_direction = 1 % 1 is clockwise
@@ -25,6 +26,12 @@ vel_2 = 0;
 vel_3 = 0;
 vel_4 = 0;
 
+dWallSide = 150; 
+kWall = 0.002 ;
+b = 100;
+e = 200;
+wheel_radius = 85; 
+a = 200; 
 
 % initializing wheel_1
 wheel_1 = wb_robot_get_device('wheel_1');
@@ -161,8 +168,8 @@ while wb_robot_step(TIME_STEP) ~= -1
       end
     end
   elseif STAGE == 3 
-    y = (GRADIENT*current_gps(1))+INTERCEPT
-    abs_diff = imabsdiff( y,current_gps(2))
+    y = (GRADIENT*current_gps(1))+INTERCEPT;
+    abs_diff = imabsdiff( y,current_gps(2));
     if abs_diff < 0.09
       [vel_1, vel_2, vel_3, vel_4] = stop();
       STAGE = 4
@@ -171,20 +178,13 @@ while wb_robot_step(TIME_STEP) ~= -1
       dFL = wb_distance_sensor_get_value(ds_dFL);
       dRL = wb_distance_sensor_get_value(ds_dRL);
       
-      dWallSide = 150 
-      kWall = 0.002 
-      b = 100 
-      e = 200 
-      wheel_radius = 85 
-      a = 200 
-      phi = atan((dRL-dFL)/a)
-      d = (dWallSide-0.5*(dFL+dRL))
+      phi = atan((dRL-dFL)/a);
+      d = (dWallSide-0.5*(dFL+dRL));
       
-      gamma = kWall*d
-      alpha = phi+gamma
-      wL = MAX_ANGULAR_VEL*(cos(alpha)+(b/e)*sin(alpha))
-      wR = MAX_ANGULAR_VEL*(cos(alpha)-(b/e)*sin(alpha))
-      
+      gamma = kWall*d;
+      alpha = phi+gamma;
+      wL = MAX_ANGULAR_VEL*(cos(alpha)+(b/e)*sin(alpha));
+      wR = MAX_ANGULAR_VEL*(cos(alpha)-(b/e)*sin(alpha));
      
       vel_1 = wL;
       vel_2 = wR;
@@ -209,7 +209,6 @@ while wb_robot_step(TIME_STEP) ~= -1
       revolve_direction = get_optimal_turn_direction(bearing,target_bearing);
       
     elseif SUBSTAGE == 1
-      wb_console_print(strcat('STAGE: ', num2str(STAGE), '  bearing: ', num2str(bearing), '  target bearing: ', num2str(target_bearing)), WB_STDOUT);
       abs_diff = imabsdiff( bearing, target_bearing)
       
       REV_SPD = get_rev_speed(bearing,target_bearing,MAX_ANGULAR_VEL);
