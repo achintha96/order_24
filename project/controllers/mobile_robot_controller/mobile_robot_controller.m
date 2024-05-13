@@ -5,13 +5,13 @@
 % Author:
 % Modifications:
 
-STAGE = 0
-SUBSTAGE = 0
+STAGE = 0;
+SUBSTAGE = 0;
 TIME_STEP = 64;
 MAX_ANGULAR_VEL = 1.5625;
 REV_SPD = MAX_ANGULAR_VEL*0.0025; 
-GRADIENT = 0
-INTERCEPT = 0
+GRADIENT = 0;
+INTERCEPT = 0;
 CURRENT_TARGET = [0.1, -0.35];
 CURRENT_TARGET_ORIENTATON = 0;
 DELIVERY_TARGET = [2.5, 0.03];
@@ -20,7 +20,7 @@ OBSTACLE_THR = 500;
 
 target_bearing = 0;
 last_bearing = 0;
-revolve_direction = 1 % 1 is clockwise
+revolve_direction = 1; % 1 is clockwise
 vel_1 = 0;
 vel_2 = 0;
 vel_3 = 0;
@@ -62,12 +62,6 @@ wb_distance_sensor_enable(ds_left, TIME_STEP);
 
 ds_right  = wb_robot_get_device('ds_right');
 wb_distance_sensor_enable(ds_right, TIME_STEP);
-
-ds_dFL  = wb_robot_get_device('dFL');
-wb_distance_sensor_enable(ds_dFL, TIME_STEP);
-
-ds_dRL  = wb_robot_get_device('dRL');
-wb_distance_sensor_enable(ds_dRL, TIME_STEP);
 
 box_1 = wb_robot_get_device('load_sensor_1');
 wb_distance_sensor_enable(box_1, TIME_STEP);
@@ -114,7 +108,6 @@ while wb_robot_step(TIME_STEP) ~= -1
       [vel_1, vel_2, vel_3, vel_4] = stop();
       STAGE = 5 
     elseif ds_val_centre<OBSTACLE_THR | ds_val_left<OBSTACLE_THR | ds_val_right<OBSTACLE_THR 
-      wb_console_print(strcat('STAGE: ', num2str(STAGE), '  ds_centre: ', num2str(ds_val_centre), '  ds_left: ', num2str(ds_val_left), '  ds_right: ', num2str(ds_val_right)), WB_STDOUT);
       [vel_1, vel_2, vel_3, vel_4] = stop();
       STAGE = 2 
     else
@@ -142,7 +135,7 @@ while wb_robot_step(TIME_STEP) ~= -1
     end
   elseif STAGE == 2 
     if SUBSTAGE == 0
-      target_bearing = mod(bearing + 90,360)
+      target_bearing = mod(bearing + 90,360);
       [vel_1, vel_2, vel_3, vel_4] = stop();
       SUBSTAGE = 1
     elseif SUBSTAGE == 1
@@ -156,10 +149,9 @@ while wb_robot_step(TIME_STEP) ~= -1
       end
       
     elseif SUBSTAGE == 2
-      y = (GRADIENT*current_gps(1))+INTERCEPT
-      abs_diff = imabsdiff( y,current_gps(2))
+      y = (GRADIENT*current_gps(1))+INTERCEPT;
+      abs_diff = imabsdiff( y,current_gps(2));
       if abs_diff < 0.1
-        wb_console_print(strcat('STAGE: ', num2str(STAGE), '  current_x: ', num2str(current_gps(1)), '  current_y: ', num2str(current_gps(2)), '  calculated y: ', num2str(y)), WB_STDOUT);
         [vel_1, vel_2, vel_3, vel_4] = traverse(MAX_ANGULAR_VEL,1);
       else
         [vel_1, vel_2, vel_3, vel_4] = stop();
@@ -209,7 +201,7 @@ while wb_robot_step(TIME_STEP) ~= -1
       revolve_direction = get_optimal_turn_direction(bearing,target_bearing);
       
     elseif SUBSTAGE == 1
-      abs_diff = imabsdiff( bearing, target_bearing)
+      abs_diff = imabsdiff( bearing, target_bearing);
       
       REV_SPD = get_rev_speed(bearing,target_bearing,MAX_ANGULAR_VEL);
       
