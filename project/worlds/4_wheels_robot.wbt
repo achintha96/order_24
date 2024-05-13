@@ -15,7 +15,6 @@ Viewpoint {
 TexturedBackground {
 }
 TexturedBackgroundLight {
-  luminosity 0.5
 }
 Floor {
   size 6 6
